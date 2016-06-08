@@ -119,3 +119,32 @@ def test_have_2_or_3_neighbouts_will_live():
     assert game.get(3, 2).islive() == True
     assert game.get(5, 2).islive() == True
     assert game.get(5, 3).islive() == True
+
+
+def test_die_cell_have_3_neighbouts_will_become_live():
+    # ........
+    # ..***...
+    # ...**...
+    # ........
+    # arrange
+    game = Game(8, 4)
+    game.get(3, 2).live()
+    game.get(4, 2).live()
+    game.get(5, 2).live()
+    game.get(4, 3).live()
+    game.get(5, 3).live()
+
+    # arrange
+    game = Game(8, 4)
+    game.get(3, 2).live()
+    game.get(4, 2).live()
+    game.get(5, 2).live()
+    game.get(4, 3).live()
+    game.get(5, 3).live()
+
+    # act
+    game.update()
+
+    # assert
+    assert game.get(4, 1).islive() == True
+    assert game.get(3, 3).islive() == True
