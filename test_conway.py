@@ -40,6 +40,7 @@ def test_less_2_neighbours_will_die():
     assert game.get(5, 2).isdie()
     assert game.get(5, 3).isdie()
 
+
 def test_count_cell_neighbours():
     # ........
     # ..***...
@@ -88,3 +89,33 @@ def test_more_3_neighbours_will_die():
     # assert
     assert game.get(4, 2).isdie() == True
     assert game.get(4, 3).isdie() == True
+
+
+def test_have_2_or_3_neighbouts_will_live():
+    # ........
+    # ..***...
+    # ...**...
+    # ........
+    # arrange
+    game = Game(8, 4)
+    game.get(3, 2).live()
+    game.get(4, 2).live()
+    game.get(5, 2).live()
+    game.get(4, 3).live()
+    game.get(5, 3).live()
+
+    # arrange
+    game = Game(8, 4)
+    game.get(3, 2).live()
+    game.get(4, 2).live()
+    game.get(5, 2).live()
+    game.get(4, 3).live()
+    game.get(5, 3).live()
+
+    # act
+    game.update()
+
+    # assert
+    assert game.get(3, 2).islive() == True
+    assert game.get(5, 2).islive() == True
+    assert game.get(5, 3).islive() == True
