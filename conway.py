@@ -28,7 +28,12 @@ class Cell(object):
         return self.value == LIVE_VALUE
 
     def update(self):
-        self.value = self.nextValue
+        if self.nextValue is not None:
+            self.value = self.nextValue
+        self.nextValue = None
+
+    def __str__(self):
+        return self.value
 
 
 class Game(object):
@@ -49,6 +54,10 @@ class Game(object):
             count = self.count_neighbout(*pos)
             if count < 2 or count > 3:
                 cell.die(nextloop=True)
+            elif count == 2:
+                pass
+            elif count == 3 and cell.isdie():
+                cell.live(nextloop=True)
 
         for pose, cell in self.grid.iteritems():
             cell.update()
@@ -72,3 +81,26 @@ class Game(object):
         if self.get(x + 1, y + 1) is not None and self.get(x + 1, y + 1).islive():
             count += 1
         return count
+
+    def draw(self):
+        import sys
+        for y in range(1, self.height):
+            for x in range(1, self.width):
+                 sys.stdout.write(str(self.get(x, y)))
+            sys.stdout.write('\n')
+        pass
+
+
+def main():
+    game = Game(8, 8)
+    import random
+    for i in range(10):
+        game.get(random.randrange(1, 8), random.randrange(1, 8)).live()
+    while True:
+        game.draw()
+        c = raw_input()
+        game.update()
+
+
+if __name__ == '__main__':
+    main()
